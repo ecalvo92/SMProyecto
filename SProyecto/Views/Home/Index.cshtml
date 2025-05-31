@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Autenticacion
+@{
     Layout = "_LayoutExterno";
 }
 
@@ -7,24 +8,27 @@
         <div id="loginform">
             <div class="logo">
                 <span class="db"><img src="~/img/logo-icon.png" alt="logo" /></span>
-                <h5 class="font-medium m-b-20">Sign In to Admin</h5>
+                <h5 class="font-medium m-b-20">Iniciar Sesión</h5>
             </div>
 
             <div class="row">
                 <div class="col-12">
                     <form class="form-horizontal m-t-20" id="loginform" action="index.html">
-                        <div class="input-group mb-3">
+                        
+                      <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="ti-user"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" class="form-control form-control-lg" placeholder="Nombre Usuario" asp-for="NombreUsuario">
                         </div>
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon2"><i class="ti-pencil"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                            <input type="password" class="form-control form-control-lg" placeholder="Contraseña" asp-for="Contrasenna">
                         </div>
+
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="custom-control custom-checkbox">
@@ -34,11 +38,13 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group text-center">
                             <div class="col-xs-12 p-b-20">
-                                <button class="btn btn-block btn-lg btn-info" type="submit">Log In</button>
+                                <button class="btn btn-block btn-lg btn-info" type="submit">Procesar</button>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
                                 <div class="social">
@@ -47,6 +53,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group m-b-0 m-t-10">
                             <div class="col-sm-12 text-center">
                                 Don't have an account? <a href="authentication-register1.html" class="text-info m-l-5"><b>Sign Up</b></a>
@@ -54,28 +61,6 @@
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-        <div id="recoverform">
-            <div class="logo">
-                <span class="db"><img src="~/img/logo-icon.png" alt="logo" /></span>
-                <h5 class="font-medium m-b-20">Recover Password</h5>
-                <span>Enter your Email and instructions will be sent to you!</span>
-            </div>
-            <div class="row m-t-20">
-
-                <form class="col-12" action="index.html">
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <input class="form-control form-control-lg" type="email" required="" placeholder="Username">
-                        </div>
-                    </div>
-                    <div class="row m-t-20">
-                        <div class="col-12">
-                            <button class="btn btn-block btn-lg btn-danger" type="submit" name="action">Reset</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
