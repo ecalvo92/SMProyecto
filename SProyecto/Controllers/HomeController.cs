@@ -8,11 +8,10 @@ namespace SProyecto.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IConfiguration _configuration;
+    public HomeController(IConfiguration configuration)
     {
-        _logger = logger;
+        _configuration = configuration;
     }
 
     #region Index
@@ -26,7 +25,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(Autenticacion autenticacion)
     {
-        using (var contexto = new SqlConnection("Server=EDUARDO; DataBase=SMDataBase; Integrated Security=True; TrustServerCertificate=True;"))
+        using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
         {
             var resultado = contexto.QueryFirstOrDefault<Autenticacion>("ValidarInicioSesion", new
             {
@@ -55,7 +54,7 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Registro(Autenticacion autenticacion)
     {
-        using (var contexto = new SqlConnection("Server=EDUARDO; DataBase=SMDataBase; Integrated Security=True; TrustServerCertificate=True;"))
+        using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
         {
             var Estado = true;
 
