@@ -13,6 +13,8 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    #region Index
+
     [HttpGet]
     public IActionResult Index()
     {
@@ -22,16 +24,36 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(Autenticacion autenticacion)
     {
-        /*
-         * 
-         * 
-         * 
-        */
+
+
 
         ViewBag.Mensaje = "No se ha podido validar su información";
         return View();
         //return RedirectToAction("Principal", "Home");
     }
+
+    #endregion
+
+    #region Registro
+
+    [HttpGet]
+    public IActionResult Registro()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Registro(Autenticacion autenticacion)
+    {
+
+
+
+        ViewBag.Mensaje = "No se ha podido registrar su información";
+        return View();
+        //return RedirectToAction("Principal", "Home");
+    }
+
+    #endregion
 
     [HttpGet]
     public IActionResult Principal()
