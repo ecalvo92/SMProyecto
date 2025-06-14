@@ -1,4 +1,4 @@
-﻿namespace SProyecto.Models
+﻿namespace SApi.Models
 {
     public class Autenticacion
     {
@@ -7,6 +7,6 @@
         public string? CorreoElectronico { get; set; }
         public string? NombreUsuario { get; set; }
         public string? Contrasenna { get; set; }
-        public bool Estado { get; set; } = true;
+        public bool Estado { get; set; }
     }
 }

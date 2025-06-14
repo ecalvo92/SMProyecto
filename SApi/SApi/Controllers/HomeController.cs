@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using SApi.Models;
 
 namespace SApi.Controllers
 {
@@ -7,23 +11,51 @@ namespace SApi.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        [HttpPost]
-        [Route("Registro")]
-        public IActionResult Registro()
+        private readonly IConfiguration _configuration;
+        public HomeController(IConfiguration configuration)
         {
-
-
-            return Ok();
+            _configuration = configuration;
         }
 
+        [HttpPost]
+        [Route("Registro")]
+        public IActionResult Registro(Autenticacion autenticacion)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("RegistrarUsuario", new
+                {
+                    autenticacion.Nombre,
+                    autenticacion.CorreoElectronico,
+                    autenticacion.NombreUsuario,
+                    autenticacion.Contrasenna,
+                    autenticacion.Estado
+                });
+
+                if (resultado > 0)
+                    return Ok();
+                else
+                    return BadRequest(); 
+            }
+        }
 
         [HttpPost]
         [Route("Index")]
-        public IActionResult Index()
+        public IActionResult Index(Autenticacion autenticacion)
         {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.QueryFirstOrDefault<Autenticacion>("ValidarInicioSesion", new
+                {
+                    autenticacion.NombreUsuario,
+                    autenticacion.Contrasenna
+                });
 
-
-            return Ok();
+                if (resultado != null)
+                    return Ok();
+                else
+                    return NotFound();
+            }
         }
 
     }
