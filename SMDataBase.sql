@@ -23,9 +23,21 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [NombreUsuario], [Contrasenna], [Estado]) VALUES (1, N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'ecalvo', N'90415', 1)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [NombreUsuario], [Contrasenna], [Estado]) VALUES (1, N'Nathalie', N'npoveda1@ufide.ac.cr', N'npoveda1', N'1', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
+GO
+
+ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_CorreoElectronico] UNIQUE NONCLUSTERED 
+(
+	[CorreoElectronico] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_NombreUsuario] UNIQUE NONCLUSTERED 
+(
+	[NombreUsuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
 CREATE PROCEDURE [dbo].[RegistrarUsuario]
@@ -37,9 +49,15 @@ CREATE PROCEDURE [dbo].[RegistrarUsuario]
 AS
 BEGIN
 
-	INSERT INTO dbo.TUsuario (Nombre,CorreoElectronico,NombreUsuario,Contrasenna,Estado)
-    VALUES (@Nombre, @CorreoElectronico, @NombreUsuario, @Contrasenna, @Estado)
+	IF NOT EXISTS(SELECT 1 FROM dbo.TUsuario
+				  WHERE NombreUsuario = @NombreUsuario
+					OR	CorreoElectronico = @CorreoElectronico)
+	BEGIN
 
+		INSERT INTO dbo.TUsuario (Nombre,CorreoElectronico,NombreUsuario,Contrasenna,Estado)
+		VALUES (@Nombre, @CorreoElectronico, @NombreUsuario, @Contrasenna, @Estado)
+
+	END		
 END
 GO
 
