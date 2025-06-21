@@ -57,7 +57,7 @@ namespace SApi.Controllers
                 if (resultado != null)
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 else
-                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));                
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));
             }
         }
 
