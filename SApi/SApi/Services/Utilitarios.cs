@@ -2,7 +2,7 @@
 
 namespace SApi.Services
 {
-    public class Utilitarios
+    public class Utilitarios : IUtilitarios
     {
 
         public RespuestaEstandar RespuestaCorrecta(object contenido)

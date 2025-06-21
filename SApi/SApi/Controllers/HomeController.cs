@@ -13,12 +13,12 @@ namespace SApi.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public HomeController(IConfiguration configuration)
+        private readonly IUtilitarios _utilitarios;
+        public HomeController(IConfiguration configuration, IUtilitarios utilitarios)
         {
             _configuration = configuration;
+            _utilitarios = utilitarios;
         }
-
-        Utilitarios util = new Utilitarios();
 
         [HttpPost]
         [Route("Registro")]
@@ -36,9 +36,9 @@ namespace SApi.Controllers
                 });
 
                 if (resultado > 0)
-                    return Ok(util.RespuestaCorrecta(autenticacion));
+                    return Ok(_utilitarios.RespuestaCorrecta(autenticacion));
                 else
-                    return BadRequest(util.RespuestaIncorrecta("Su información no fue registrada correctamente"));
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue registrada correctamente"));
             }
         }
 
@@ -55,9 +55,9 @@ namespace SApi.Controllers
                 });
 
                 if (resultado != null)
-                    return Ok(util.RespuestaCorrecta(resultado));
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 else
-                    return BadRequest(util.RespuestaIncorrecta("Su información no fue validada correctamente"));                
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));                
             }
         }
 
