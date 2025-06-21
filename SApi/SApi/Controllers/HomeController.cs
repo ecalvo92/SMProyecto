@@ -33,9 +33,20 @@ namespace SApi.Controllers
                 });
 
                 if (resultado > 0)
-                    return Ok();
+                {
+                    return Ok(new RespuestaEstandar
+                    {
+                        codigo = 0
+                    });
+                }
                 else
-                    return BadRequest(); 
+                {
+                    return BadRequest(new RespuestaEstandar
+                    {
+                        codigo = 99,
+                        mensaje = "Su información no fue registrada correctamente"
+                    });
+                }
             }
         }
 
@@ -52,9 +63,21 @@ namespace SApi.Controllers
                 });
 
                 if (resultado != null)
-                    return Ok();
+                {
+                    return Ok(new RespuestaEstandar
+                    {
+                        codigo = 0,
+                        contenido = resultado
+                    });
+                }
                 else
-                    return NotFound();
+                {
+                    return BadRequest(new RespuestaEstandar {
+                        codigo = 99,
+                        mensaje = "Su información no fue validada correctamente"
+                    });
+                }
+                
             }
         }
 
