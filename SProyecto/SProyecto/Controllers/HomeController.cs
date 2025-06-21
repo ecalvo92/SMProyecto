@@ -31,10 +31,15 @@ public class HomeController : Controller
             var resultado = http.PostAsJsonAsync("api/Home/Index", autenticacion).Result;
 
             if (resultado.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Principal", "Home");
-
-            ViewBag.Mensaje = "No se ha podido validar su información";
-            return View();
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                ViewBag.Mensaje = respuesta!.Mensaje;
+                return View();
+            }
         }
     }
 
@@ -57,10 +62,15 @@ public class HomeController : Controller
             var resultado = http.PostAsJsonAsync("api/Home/Registro", autenticacion).Result;
 
             if (resultado.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Index", "Home");
-
-            ViewBag.Mensaje = "No se ha podido registrar su información";
-            return View();
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                ViewBag.Mensaje = respuesta!.Mensaje;
+                return View();
+            }
         }
     }
 

@@ -7,6 +7,19 @@ GO
 USE [SMDataBase]
 GO
 
+CREATE TABLE [dbo].[TError](
+	[IdError] [bigint] IDENTITY(1,1) NOT NULL,
+	[Mensaje] [varchar](max) NOT NULL,
+	[Origen] [varchar](255) NOT NULL,
+	[FechaHora] [datetime] NOT NULL,
+	[IdUsuario] [bigint] NOT NULL,
+ CONSTRAINT [PK_TError] PRIMARY KEY CLUSTERED 
+(
+	[IdError] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[TUsuario](
 	[IdUsuario] [bigint] IDENTITY(1,1) NOT NULL,
 	[Nombre] [varchar](255) NOT NULL,
@@ -19,6 +32,15 @@ CREATE TABLE [dbo].[TUsuario](
 	[IdUsuario] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+SET IDENTITY_INSERT [dbo].[TError] ON 
+GO
+INSERT [dbo].[TError] ([IdError], [Mensaje], [Origen], [FechaHora], [IdUsuario]) VALUES (1, N'Could not find stored procedure ''ValidarInicioSesion2''.', N'/api/Home/Index', CAST(N'2025-06-21T10:21:05.440' AS DateTime), 0)
+GO
+INSERT [dbo].[TError] ([IdError], [Mensaje], [Origen], [FechaHora], [IdUsuario]) VALUES (2, N'Could not find stored procedure ''ValidarInicioSesion2''.', N'/api/Home/Index', CAST(N'2025-06-21T10:21:24.190' AS DateTime), 0)
+GO
+SET IDENTITY_INSERT [dbo].[TError] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
@@ -38,6 +60,19 @@ ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_NombreUsuario] UNIQUE NONCLUSTE
 (
 	[NombreUsuario] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+CREATE PROCEDURE [dbo].[RegistrarError]
+	@Mensaje varchar(max),
+	@Origen varchar(255),
+    @IdUsuario bigint
+AS
+BEGIN
+
+	INSERT INTO dbo.TError (Mensaje,Origen,FechaHora,IdUsuario)
+    VALUES (@Mensaje, @Origen, GETDATE(),@IdUsuario)
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[RegistrarUsuario]
