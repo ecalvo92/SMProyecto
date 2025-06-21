@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using SApi.Models;
+using SApi.Services;
 
 namespace SApi.Controllers
 {
@@ -16,6 +17,8 @@ namespace SApi.Controllers
         {
             _configuration = configuration;
         }
+
+        Utilitarios util = new Utilitarios();
 
         [HttpPost]
         [Route("Registro")]
@@ -33,20 +36,9 @@ namespace SApi.Controllers
                 });
 
                 if (resultado > 0)
-                {
-                    return Ok(new RespuestaEstandar
-                    {
-                        codigo = 0
-                    });
-                }
+                    return Ok(util.RespuestaCorrecta(autenticacion));
                 else
-                {
-                    return BadRequest(new RespuestaEstandar
-                    {
-                        codigo = 99,
-                        mensaje = "Su información no fue registrada correctamente"
-                    });
-                }
+                    return BadRequest(util.RespuestaIncorrecta("Su información no fue registrada correctamente"));
             }
         }
 
@@ -63,21 +55,9 @@ namespace SApi.Controllers
                 });
 
                 if (resultado != null)
-                {
-                    return Ok(new RespuestaEstandar
-                    {
-                        codigo = 0,
-                        contenido = resultado
-                    });
-                }
+                    return Ok(util.RespuestaCorrecta(resultado));
                 else
-                {
-                    return BadRequest(new RespuestaEstandar {
-                        codigo = 99,
-                        mensaje = "Su información no fue validada correctamente"
-                    });
-                }
-                
+                    return BadRequest(util.RespuestaIncorrecta("Su información no fue validada correctamente"));                
             }
         }
 

@@ -2,8 +2,8 @@
 {
     public class RespuestaEstandar
     {
-        public int codigo { get; set; }
-        public string? mensaje { get; set; }
-        public object? contenido { get; set; }
+        public int Codigo { get; set; }
+        public string? Mensaje { get; set; }
+        public object? Contenido { get; set; }
     }
 }
