@@ -30,7 +30,7 @@ namespace SApi.Controllers
                 {
                     autenticacion.Nombre,
                     autenticacion.CorreoElectronico,
-                    autenticacion.NombreUsuario,
+                    autenticacion.Identificacion,
                     autenticacion.Contrasenna,
                     autenticacion.Estado
                 });
@@ -50,7 +50,7 @@ namespace SApi.Controllers
             {
                 var resultado = contexto.QueryFirstOrDefault<Autenticacion>("ValidarInicioSesion", new
                 {
-                    autenticacion.NombreUsuario,
+                    autenticacion.CorreoElectronico,
                     autenticacion.Contrasenna
                 });
 
