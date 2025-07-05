@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[TUsuario](
 	[IdUsuario] [bigint] IDENTITY(1,1) NOT NULL,
 	[Nombre] [varchar](255) NOT NULL,
 	[CorreoElectronico] [varchar](100) NOT NULL,
-	[NombreUsuario] [varchar](20) NOT NULL,
+	[Identificacion] [varchar](20) NOT NULL,
 	[Contrasenna] [varchar](10) NOT NULL,
 	[Estado] [bit] NOT NULL,
  CONSTRAINT [PK_TUsuario] PRIMARY KEY CLUSTERED 
@@ -45,7 +45,9 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [NombreUsuario], [Contrasenna], [Estado]) VALUES (1, N'Nathalie', N'npoveda1@ufide.ac.cr', N'npoveda1', N'1', 1)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'ESPINOZA MONTERO ISAAC', N'iespinoza50564@ufide.ac.cr', N'208550564', N'0YUA1OGC', 1)
+GO
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado]) VALUES (2, N'BENAVIDES GUTIERREZ KATHERINE VIRGINIA', N'kbenavides10747@ufide.ac.cr', N'117410747', N'0FHV12O8', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
 GO
@@ -58,8 +60,21 @@ GO
 
 ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_NombreUsuario] UNIQUE NONCLUSTERED 
 (
-	[NombreUsuario] ASC
+	[Identificacion] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+create PROCEDURE [dbo].[ActualizarContrasenna]
+	@IdUsuario bigint,
+    @Contrasenna varchar(10)
+AS
+BEGIN
+
+	UPDATE dbo.TUsuario
+	SET Contrasenna = @Contrasenna
+	WHERE IdUsuario = @IdUsuario
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[RegistrarError]
@@ -78,26 +93,41 @@ GO
 CREATE PROCEDURE [dbo].[RegistrarUsuario]
 	@Nombre varchar(255),
     @CorreoElectronico varchar(100),
-    @NombreUsuario varchar(20),
+    @Identificacion varchar(20),
     @Contrasenna varchar(10),
 	@Estado bit
 AS
 BEGIN
 
 	IF NOT EXISTS(SELECT 1 FROM dbo.TUsuario
-				  WHERE NombreUsuario = @NombreUsuario
+				  WHERE Identificacion = @Identificacion
 					OR	CorreoElectronico = @CorreoElectronico)
 	BEGIN
 
-		INSERT INTO dbo.TUsuario (Nombre,CorreoElectronico,NombreUsuario,Contrasenna,Estado)
-		VALUES (@Nombre, @CorreoElectronico, @NombreUsuario, @Contrasenna, @Estado)
+		INSERT INTO dbo.TUsuario (Nombre,CorreoElectronico,Identificacion,Contrasenna,Estado)
+		VALUES (@Nombre, @CorreoElectronico, @Identificacion, @Contrasenna, @Estado)
 
 	END		
 END
 GO
 
+CREATE PROCEDURE [dbo].[ValidarCorreo]
+	@CorreoElectronico varchar(100)
+AS
+BEGIN
+
+	SELECT	IdUsuario,
+			Nombre,
+			CorreoElectronico,
+			Identificacion
+	  FROM	dbo.TUsuario
+	WHERE	CorreoElectronico = @CorreoElectronico
+
+END
+GO
+
 CREATE PROCEDURE [dbo].[ValidarInicioSesion]
-	@NombreUsuario varchar(20),
+	@CorreoElectronico varchar(100),
     @Contrasenna varchar(10)
 AS
 BEGIN
@@ -105,9 +135,9 @@ BEGIN
 	SELECT	IdUsuario,
 			Nombre,
 			CorreoElectronico,
-			NombreUsuario
+			Identificacion
 	  FROM	dbo.TUsuario
-	WHERE	NombreUsuario = @NombreUsuario
+	WHERE	CorreoElectronico = @CorreoElectronico
 		AND Contrasenna = @Contrasenna
 
 END
