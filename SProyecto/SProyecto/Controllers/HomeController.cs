@@ -76,6 +76,37 @@ public class HomeController : Controller
 
     #endregion
 
+    #region Recuperar Acceso
+
+    [HttpGet]
+    public IActionResult RecuperarAcceso()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult RecuperarAcceso(Autenticacion autenticacion)
+    {
+        using (var http = _http.CreateClient())
+        {
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+            var resultado = http.PostAsJsonAsync("api/Home/RecuperarAcceso", autenticacion).Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                ViewBag.Mensaje = respuesta!.Mensaje;
+                return View();
+            }
+        }
+    }
+
+    #endregion
+
     [HttpGet]
     public IActionResult Principal()
     {
