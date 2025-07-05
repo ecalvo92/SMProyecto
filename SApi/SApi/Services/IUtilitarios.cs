@@ -9,5 +9,9 @@ namespace SApi.Services
 
         RespuestaEstandar RespuestaIncorrecta(string mensaje);
 
+        string GenerarContrasena();
+
+        void EnviarCorreo(string destinatario, string asunto, string cuerpo);
+
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using SApi.Models;
 using SApi.Services;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SApi.Controllers
 {
@@ -13,10 +14,12 @@ namespace SApi.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly IHostEnvironment _environment;
         private readonly IUtilitarios _utilitarios;
-        public HomeController(IConfiguration configuration, IUtilitarios utilitarios)
+        public HomeController(IConfiguration configuration, IHostEnvironment environment, IUtilitarios utilitarios)
         {
             _configuration = configuration;
+            _environment = environment;
             _utilitarios = utilitarios;
         }
 
@@ -58,6 +61,44 @@ namespace SApi.Controllers
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));
+            }
+        }
+
+        [HttpPost]
+        [Route("RecuperarAcceso")]
+        public IActionResult RecuperarAcceso(Autenticacion autenticacion)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.QueryFirstOrDefault<Autenticacion>("ValidarCorreo", new
+                {
+                    autenticacion.CorreoElectronico
+                });
+
+                if (resultado != null)
+                {
+                    var Contrasenna = _utilitarios.GenerarContrasena();
+
+                    var resultadoActuallizacion = contexto.Execute("ActualizarContrasenna", new
+                    {
+                        resultado.IdUsuario,
+                        Contrasenna
+                    });
+
+                    if (resultadoActuallizacion > 0)
+                    {
+                        var ruta = Path.Combine(_environment.ContentRootPath, "Correos.html");
+                        var html = System.IO.File.ReadAllText(ruta);
+
+                        html = html.Replace("@@NombreUsuario", resultado.Nombre);
+                        html = html.Replace("@@Contrasenna", Contrasenna);
+
+                        _utilitarios.EnviarCorreo(resultado.CorreoElectronico!, "Acceso al Sistema", html);
+                        return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                    }
+                }
+                
+                return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));
             }
         }
 
