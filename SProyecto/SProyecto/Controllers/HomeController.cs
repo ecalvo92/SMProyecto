@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SProyecto.Models;
 using SProyecto.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SProyecto.Controllers;
 
@@ -41,7 +42,8 @@ public class HomeController : Controller
             {
                 var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
 
-                HttpContext.Session.SetString("Token", "");
+                HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
+                HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
 
                 return RedirectToAction("Principal", "Home");
             }
@@ -119,6 +121,13 @@ public class HomeController : Controller
     }
 
     #endregion
+
+    [HttpGet]
+    public IActionResult CerrarSesion()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index", "Home");
+    }
 
     [HttpGet]
     public IActionResult Principal()

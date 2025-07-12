@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
+builder.Services.AddSession();
 builder.Services.AddScoped<IUtilitarios, Utilitarios>();
 
 var app = builder.Build();
@@ -16,6 +17,9 @@ if (!app.Environment.IsDevelopment())
 app.UseExceptionHandler("/Error/CapturarError");
 
 app.UseHttpsRedirection();
+
+app.UseSession();
+
 app.UseStaticFiles();
 
 app.UseRouting();
