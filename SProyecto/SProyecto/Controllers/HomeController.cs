@@ -1,6 +1,9 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SProyecto.Models;
+using SProyecto.Services;
 
 namespace SProyecto.Controllers;
 
@@ -8,10 +11,12 @@ public class HomeController : Controller
 {
     private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory _http;
-    public HomeController(IConfiguration configuration, IHttpClientFactory http)
+    private readonly IUtilitarios _utilitarios;
+    public HomeController(IConfiguration configuration, IHttpClientFactory http, IUtilitarios utilitarios)
     {
         _configuration = configuration;
         _http = http;
+        _utilitarios = utilitarios;
     }
 
     #region Index
@@ -25,6 +30,8 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(Autenticacion autenticacion)
     {
+        autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
+
         using (var http = _http.CreateClient())
         {
             http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
@@ -56,6 +63,8 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Registro(Autenticacion autenticacion)
     {
+        autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
+
         using (var http = _http.CreateClient())
         {
             http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
@@ -112,4 +121,5 @@ public class HomeController : Controller
     {
         return View();
     }
+
 }

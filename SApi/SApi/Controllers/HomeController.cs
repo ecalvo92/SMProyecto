@@ -77,7 +77,8 @@ namespace SApi.Controllers
 
                 if (resultado != null)
                 {
-                    var Contrasenna = _utilitarios.GenerarContrasena();
+                    var ContrasennaNotificar = _utilitarios.GenerarContrasena();
+                    var Contrasenna = _utilitarios.Encrypt(ContrasennaNotificar);
 
                     var resultadoActuallizacion = contexto.Execute("ActualizarContrasenna", new
                     {
@@ -91,7 +92,7 @@ namespace SApi.Controllers
                         var html = System.IO.File.ReadAllText(ruta);
 
                         html = html.Replace("@@NombreUsuario", resultado.Nombre);
-                        html = html.Replace("@@Contrasenna", Contrasenna);
+                        html = html.Replace("@@Contrasenna", ContrasennaNotificar);
 
                         _utilitarios.EnviarCorreo(resultado.CorreoElectronico!, "Acceso al Sistema", html);
                         return Ok(_utilitarios.RespuestaCorrecta(resultado));
