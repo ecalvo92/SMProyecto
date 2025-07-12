@@ -4,6 +4,9 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace SApi.Services
 {
@@ -68,6 +71,29 @@ namespace SApi.Services
 
                 smtp.Send(mensaje);
             }
+        }
+
+        public string GenerarToken(long IdUsuario)
+        {
+            var key = Encoding.UTF8.GetBytes(_configuration.GetSection("Start:LlaveSegura").Value!);
+
+            var claims = new[]
+            {
+                new Claim("IdUsuario", IdUsuario.ToString()),
+            };
+
+            var signingCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256
+            );
+
+            var tokenDescriptor = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(10),
+                signingCredentials: signingCredentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
 
         public string Encrypt(string texto)

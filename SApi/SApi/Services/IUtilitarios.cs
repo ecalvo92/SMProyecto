@@ -13,6 +13,8 @@ namespace SApi.Services
 
         void EnviarCorreo(string destinatario, string asunto, string cuerpo);
 
+        string GenerarToken(long IdUsuario);
+
         string Encrypt(string texto);
 
     }

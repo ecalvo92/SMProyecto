@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -25,6 +26,7 @@ namespace SApi.Controllers
 
         [HttpPost]
         [Route("Registro")]
+        [AllowAnonymous]
         public IActionResult Registro(Autenticacion autenticacion)
         {
             using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
@@ -47,6 +49,7 @@ namespace SApi.Controllers
 
         [HttpPost]
         [Route("Index")]
+        [AllowAnonymous]
         public IActionResult Index(Autenticacion autenticacion)
         {
             using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
@@ -58,7 +61,11 @@ namespace SApi.Controllers
                 });
 
                 if (resultado != null)
+                {
+                    //Se autenticó correctamente
+                    resultado.Token = _utilitarios.GenerarToken(resultado.IdUsuario);
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                }
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));
             }
@@ -66,6 +73,7 @@ namespace SApi.Controllers
 
         [HttpPost]
         [Route("RecuperarAcceso")]
+        [AllowAnonymous]
         public IActionResult RecuperarAcceso(Autenticacion autenticacion)
         {
             using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
