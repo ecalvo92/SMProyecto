@@ -39,6 +39,10 @@ public class HomeController : Controller
 
             if (resultado.IsSuccessStatusCode)
             {
+                var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
+
+                HttpContext.Session.SetString("Token", "");
+
                 return RedirectToAction("Principal", "Home");
             }
             else
