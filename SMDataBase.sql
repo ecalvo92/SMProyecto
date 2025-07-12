@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[TUsuario](
 	[Nombre] [varchar](255) NOT NULL,
 	[CorreoElectronico] [varchar](100) NOT NULL,
 	[Identificacion] [varchar](20) NOT NULL,
-	[Contrasenna] [varchar](10) NOT NULL,
+	[Contrasenna] [varchar](255) NOT NULL,
 	[Estado] [bit] NOT NULL,
  CONSTRAINT [PK_TUsuario] PRIMARY KEY CLUSTERED 
 (
@@ -45,9 +45,7 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'ESPINOZA MONTERO ISAAC', N'iespinoza50564@ufide.ac.cr', N'208550564', N'0YUA1OGC', 1)
-GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado]) VALUES (2, N'BENAVIDES GUTIERREZ KATHERINE VIRGINIA', N'kbenavides10747@ufide.ac.cr', N'117410747', N'0FHV12O8', 1)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado]) VALUES (1, N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'304590415', N'cMgQC+171mKu5Vsjm/JCwg==', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
 GO
@@ -64,9 +62,9 @@ ALTER TABLE [dbo].[TUsuario] ADD  CONSTRAINT [uk_NombreUsuario] UNIQUE NONCLUSTE
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
-create PROCEDURE [dbo].[ActualizarContrasenna]
+CREATE PROCEDURE [dbo].[ActualizarContrasenna]
 	@IdUsuario bigint,
-    @Contrasenna varchar(10)
+    @Contrasenna varchar(255)
 AS
 BEGIN
 
@@ -94,7 +92,7 @@ CREATE PROCEDURE [dbo].[RegistrarUsuario]
 	@Nombre varchar(255),
     @CorreoElectronico varchar(100),
     @Identificacion varchar(20),
-    @Contrasenna varchar(10),
+    @Contrasenna varchar(255),
 	@Estado bit
 AS
 BEGIN
@@ -128,7 +126,7 @@ GO
 
 CREATE PROCEDURE [dbo].[ValidarInicioSesion]
 	@CorreoElectronico varchar(100),
-    @Contrasenna varchar(10)
+    @Contrasenna varchar(255)
 AS
 BEGIN
 
