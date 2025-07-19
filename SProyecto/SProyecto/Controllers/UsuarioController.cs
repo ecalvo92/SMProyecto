@@ -34,7 +34,7 @@ namespace SProyecto.Controllers
                 if (resultado.IsSuccessStatusCode)
                 {
                     var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
-                    return View(datos);
+                    return View(datos!.Contenido);
                 }
                 else
                 {
