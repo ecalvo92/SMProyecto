@@ -42,6 +42,7 @@ public class HomeController : Controller
             {
                 var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<Autenticacion>>().Result;
 
+                HttpContext.Session.SetString("IdUsuario", datos?.Contenido?.IdUsuario.ToString()!);
                 HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
                 HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
 
