@@ -146,5 +146,19 @@ namespace SApi.Services
             }
         }
 
+        public long ObtenerIdUsuario(IEnumerable<Claim> token)
+        {
+            if (token.Any())
+            {
+                var IdUsuarioClaim = token.FirstOrDefault(c => c.Type == "IdUsuario");
+                if (IdUsuarioClaim != null && long.TryParse(IdUsuarioClaim.Value, out long idUsuario))
+                {
+                    return idUsuario;
+                }
+            }
+
+            return 0;
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SApi.Models;
+using System.Security.Claims;
 
 namespace SApi.Services
 {
@@ -16,6 +17,8 @@ namespace SApi.Services
         string GenerarToken(long IdUsuario);
 
         string Encrypt(string texto);
+
+        long ObtenerIdUsuario(IEnumerable<Claim> token);
 
     }
 }
