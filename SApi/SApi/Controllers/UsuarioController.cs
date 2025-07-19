@@ -43,5 +43,26 @@ namespace SApi.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("ActualizarUsuario")]
+        public IActionResult ActualizarUsuario(Autenticacion autenticacion)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("ActualizarUsuario", new
+                {
+                    autenticacion.IdUsuario,
+                    autenticacion.Identificacion,
+                    autenticacion.Nombre,
+                    autenticacion.CorreoElectronico
+                });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(autenticacion));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue actualizada correctamente"));
+            }
+        }        
+
     }
 }
