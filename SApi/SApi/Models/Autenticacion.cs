@@ -9,5 +9,8 @@
         public string? Contrasenna { get; set; }
         public bool Estado { get; set; }
         public string? Token { get; set; }
+
+        public long? IdRol { get; set; }
+        public string? NombreRol { get; set; }
     }
 }

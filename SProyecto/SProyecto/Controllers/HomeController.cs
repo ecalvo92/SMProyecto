@@ -44,6 +44,8 @@ public class HomeController : Controller
 
                 HttpContext.Session.SetString("IdUsuario", datos?.Contenido?.IdUsuario.ToString()!);
                 HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
+                HttpContext.Session.SetString("IdRol", datos?.Contenido?.IdRol.ToString()!);
+                HttpContext.Session.SetString("NombreRol", datos?.Contenido?.NombreRol!);
                 HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
 
                 return RedirectToAction("Principal", "Home");
