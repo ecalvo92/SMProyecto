@@ -8,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SProyecto.Controllers;
 
+[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 public class HomeController : Controller
 {
     private readonly IConfiguration _configuration;
@@ -125,6 +126,7 @@ public class HomeController : Controller
 
     #endregion
 
+    [Sesiones]
     [HttpGet]
     public IActionResult CerrarSesion()
     {
@@ -132,6 +134,7 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [Sesiones]
     [HttpGet]
     public IActionResult Principal()
     {

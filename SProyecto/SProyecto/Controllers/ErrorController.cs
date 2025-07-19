@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SProyecto.Controllers
 {
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class ErrorController : Controller
     {
         public IActionResult CapturarError()

@@ -6,6 +6,8 @@ using static System.Net.WebRequestMethods;
 
 namespace SProyecto.Controllers
 {
+    [Sesiones]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class UsuarioController : Controller
     {
         private readonly IConfiguration _configuration;
