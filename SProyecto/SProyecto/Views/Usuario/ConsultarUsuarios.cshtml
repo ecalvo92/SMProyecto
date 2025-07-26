@@ -1,0 +1,81 @@
+﻿@model List<Autenticacion>
+@{
+    Layout = "_Layout";
+}
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Consulta de Usuarios</h4>
+        </div>
+        <hr>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Identificación</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.IdUsuario</td>
+                            <td>@item.Identificacion</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.CorreoElectronico</td>
+                            <td>@item.NombreRol</td>
+                            <td>@(item.Estado ? "Activo" : "Inactivo")</td>
+                            <td class="text-center">
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ActualizarUsuarioModal">
+                                    Launch demo modal
+                                </button>
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ActualizarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery.min.js"></script>
+<script src="~/js/comunes.js"></script>

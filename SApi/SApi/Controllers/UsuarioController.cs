@@ -29,7 +29,7 @@ namespace SApi.Controllers
         {
             using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
             {
-                var resultado = contexto.QueryFirstOrDefault<Autenticacion>("ConsultaUsuario", new
+                var resultado = contexto.QueryFirstOrDefault<Autenticacion>("ConsultarUsuario", new
                 {
                     IdUsuario
                 });
@@ -81,7 +81,26 @@ namespace SApi.Controllers
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue actualizada correctamente"));
             }
-        }        
+        }
+
+        [HttpGet]
+        [Route("ConsultarUsuarios")]
+        public IActionResult ConsultarUsuarios()
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Query<Autenticacion>("ConsultarUsuarios", new
+                {
+                });
+
+                if (resultado != null)
+                {
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                }
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No se encontró información"));
+            }
+        }
 
     }
 }
