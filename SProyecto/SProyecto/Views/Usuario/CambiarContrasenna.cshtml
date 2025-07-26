@@ -6,29 +6,23 @@
 <div class="col-12">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Perfil de Usuario</h4>
+            <h4 class="card-title">Actualizar Contraseña</h4>
         </div>
         <hr>
 
-        <form class="form-horizontal" asp-controller="Usuario" asp-action="ActualizarPerfil">
+        <form class="form-horizontal" asp-controller="Usuario" asp-action="CambiarContrasenna">
             <div class="card-body">
+
                 <div class="form-group row">
-                    <label for="fullname" class="col-sm-3 text-right control-label col-form-label">Identificación</label>
+                    <label for="title1" class="col-sm-3 text-right control-label col-form-label">Contraseña Nueva</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" asp-for="Identificacion"
-                               onkeyup="ConsultarPersonaApi();">
+                        <input type="password" class="form-control" asp-for="Contrasenna">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="title1" class="col-sm-3 text-right control-label col-form-label">Nombre</label>
+                    <label for="com12" class="col-sm-3 text-right control-label col-form-label">Confirmar Contraseña</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" asp-for="Nombre">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="com12" class="col-sm-3 text-right control-label col-form-label">Correo Electrónico</label>
-                    <div class="col-sm-6">
-                        <input type="email" class="form-control" asp-for="CorreoElectronico">
+                        <input type="password" class="form-control" asp-for="ConfirmarContrasenna">
                     </div>
                 </div>
 

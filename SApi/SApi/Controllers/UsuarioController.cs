@@ -62,6 +62,25 @@ namespace SApi.Controllers
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue actualizada correctamente"));
             }
+        }
+
+        [HttpPut]
+        [Route("CambiarContrasenna")]
+        public IActionResult CambiarContrasenna(Autenticacion autenticacion)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("ActualizarContrasenna", new
+                {
+                    autenticacion.IdUsuario,
+                    autenticacion.Contrasenna
+                });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(autenticacion));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue actualizada correctamente"));
+            }
         }        
 
     }
