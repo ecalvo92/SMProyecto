@@ -102,5 +102,44 @@ namespace SApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ConsultarRoles")]
+        public IActionResult ConsultarRoles()
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Query<Rol>("ConsultarRoles", new
+                {
+                });
+
+                if (resultado != null)
+                {
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                }
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No se encontró información"));
+            }
+        }
+
+        [HttpPut]
+        [Route("ActualizarDatosUsuario")]
+        public IActionResult ActualizarDatosUsuario(Autenticacion autenticacion)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("ActualizarDatosUsuario", new
+                {
+                    autenticacion.IdUsuario,
+                    autenticacion.Estado,
+                    autenticacion.IdRol
+                });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(autenticacion));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("La información no fue actualizada correctamente"));
+            }
+        }
+
     }
 }

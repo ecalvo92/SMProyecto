@@ -121,6 +121,8 @@ namespace SProyecto.Controllers
         [HttpGet]
         public IActionResult ConsultarUsuarios()
         {
+            ViewBag.listaRoles = ConsultarRoles();
+
             using (var http = _http.CreateClient())
             {
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
@@ -139,6 +141,44 @@ namespace SProyecto.Controllers
                     ViewBag.Mensaje = respuesta!.Mensaje;
                     return View();
                 }
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarDatosUsuario([FromBody]Autenticacion autenticacion)
+        {
+            using (var http = _http.CreateClient())
+            {
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PutAsJsonAsync("api/Usuario/ActualizarDatosUsuario", autenticacion).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    return Json("OK");
+                }
+
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                return Json(respuesta!.Mensaje);
+            }
+        }
+
+        private List<Rol> ConsultarRoles()
+        {
+            using (var http = _http.CreateClient())
+            {
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.GetAsync("api/Usuario/ConsultarRoles").Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<List<Rol>>>().Result;
+                    return datos?.Contenido!;
+                }
+
+                return new List<Rol>();
             }
         }
 

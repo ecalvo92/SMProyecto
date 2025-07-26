@@ -67,7 +67,9 @@ GO
 
 SET IDENTITY_INSERT [dbo].[TUsuario] ON 
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado], [IdRol]) VALUES (1, N'JOSUE CAMPOS ACUÑA', N'jcampos40909@ufide.ac.cr', N'118940909', N'RRuOCbl+Uz4MRh1R56n7Nw==', 1, 2)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado], [IdRol]) VALUES (1, N'JOSUE CAMPOS ACUÑA', N'jcampos40909@ufide.ac.cr', N'118940909', N'FryXUM3ksBjsPEmTHastDw==', 1, 2)
+GO
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'304590415', N'm492i8KL8cOxlO4Cg/gt8g==', 1, 2)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
 GO
@@ -103,6 +105,21 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[ActualizarDatosUsuario]
+	@IdUsuario bigint,
+    @Estado bit,
+	@IdRol bigint
+AS
+BEGIN
+
+	UPDATE dbo.TUsuario
+	SET Estado = @Estado,
+		IdRol = @IdRol
+	WHERE IdUsuario = @IdUsuario
+		
+END
+GO
+
 CREATE PROCEDURE [dbo].[ActualizarUsuario]
 	@IdUsuario bigint,
     @Identificacion varchar(20),
@@ -127,7 +144,19 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [dbo].[ConsultaUsuario]
+CREATE PROCEDURE [dbo].[ConsultarRoles]
+
+AS
+BEGIN
+
+	SELECT	IdRol,
+			NombreRol
+	  FROM	dbo.TRol
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarUsuario]
 	@IdUsuario BIGINT
 AS
 BEGIN
@@ -142,6 +171,24 @@ BEGIN
 	  FROM	dbo.TUsuario U
 	  INNER JOIN dbo.TRol R ON U.IdRol = R.IdRol
 	WHERE	IdUsuario = @IdUsuario
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarUsuarios]
+
+AS
+BEGIN
+
+	SELECT	IdUsuario,
+			Nombre,
+			CorreoElectronico,
+			Identificacion,
+			Estado,
+			U.IdRol,
+			R.NombreRol
+	  FROM	dbo.TUsuario U
+	  INNER JOIN dbo.TRol R ON U.IdRol = R.IdRol
 
 END
 GO
