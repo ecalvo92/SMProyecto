@@ -13,10 +13,28 @@ namespace SProyecto.Services
                 context.Result = new RedirectToActionResult("Index", "Home", null);
             }
             else
-            { 
+            {
                 base.OnActionExecuting(context);
             }
         }
 
     }
+
+    public class Administradores : ActionFilterAttribute
+    {
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (context.HttpContext.Session.GetString("IdRol") != "2")
+            {
+                context.Result = new RedirectToActionResult("Principal", "Home", null);
+            }
+            else
+            {
+                base.OnActionExecuting(context);
+            }
+        }
+
+    }
+
 }

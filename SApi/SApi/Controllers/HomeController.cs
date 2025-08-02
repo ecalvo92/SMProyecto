@@ -1,12 +1,9 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using SApi.Models;
 using SApi.Services;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SApi.Controllers
 {
@@ -106,7 +103,7 @@ namespace SApi.Controllers
                         return Ok(_utilitarios.RespuestaCorrecta(resultado));
                     }
                 }
-                
+
                 return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada correctamente"));
             }
         }

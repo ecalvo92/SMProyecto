@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using SProyecto.Models;
 using SProyecto.Services;
-using static System.Net.WebRequestMethods;
 
 namespace SProyecto.Controllers
 {
@@ -61,7 +59,7 @@ namespace SProyecto.Controllers
 
                 if (resultado.IsSuccessStatusCode)
                 {
-                    HttpContext.Session.SetString("Nombre", autenticacion?.Nombre!);                   
+                    HttpContext.Session.SetString("Nombre", autenticacion?.Nombre!);
                     return RedirectToAction("Principal", "Home");
                 }
                 else
@@ -119,6 +117,7 @@ namespace SProyecto.Controllers
         #endregion
 
         [HttpGet]
+        [Administradores]
         public IActionResult ConsultarUsuarios()
         {
             ViewBag.listaRoles = ConsultarRoles();
@@ -145,7 +144,8 @@ namespace SProyecto.Controllers
         }
 
         [HttpPost]
-        public IActionResult ActualizarDatosUsuario([FromBody]Autenticacion autenticacion)
+        [Administradores]
+        public IActionResult ActualizarDatosUsuario([FromBody] Autenticacion autenticacion)
         {
             using (var http = _http.CreateClient())
             {

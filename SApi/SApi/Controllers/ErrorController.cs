@@ -1,10 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using SApi.Models;
 using SApi.Services;
 
 namespace SApi.Controllers
@@ -28,7 +25,7 @@ namespace SApi.Controllers
             var ex = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
             var Mensaje = ex!.Error.Message;
-	        var Origen = ex!.Path;
+            var Origen = ex!.Path;
             var IdUsuario = _utilitarios.ObtenerIdUsuario(User.Claims);
 
             using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))

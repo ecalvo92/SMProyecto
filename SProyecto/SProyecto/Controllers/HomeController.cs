@@ -1,10 +1,6 @@
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SProyecto.Models;
 using SProyecto.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SProyecto.Controllers;
 
