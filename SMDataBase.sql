@@ -20,6 +20,21 @@ CREATE TABLE [dbo].[TError](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
+CREATE TABLE [dbo].[TProducto](
+	[IdProducto] [bigint] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](50) NOT NULL,
+	[Descripcion] [varchar](255) NOT NULL,
+	[Precio] [decimal](10, 2) NOT NULL,
+	[Inventario] [int] NOT NULL,
+	[Imagen] [varchar](255) NOT NULL,
+	[Estado] [bit] NOT NULL,
+ CONSTRAINT [PK_TProducto] PRIMARY KEY CLUSTERED 
+(
+	[IdProducto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[TRol](
 	[IdRol] [bigint] IDENTITY(1,1) NOT NULL,
 	[NombreRol] [varchar](50) NOT NULL,
@@ -56,6 +71,15 @@ GO
 SET IDENTITY_INSERT [dbo].[TError] OFF
 GO
 
+SET IDENTITY_INSERT [dbo].[TProducto] ON 
+GO
+INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (1, N'PS4', N'Consola de videojuegos del año 2016', CAST(130000.00 AS Decimal(10, 2)), 4, N'-', 1)
+GO
+INSERT [dbo].[TProducto] ([IdProducto], [Nombre], [Descripcion], [Precio], [Inventario], [Imagen], [Estado]) VALUES (2, N'PS5', N'Consola de videojuegos del año 2022', CAST(225000.00 AS Decimal(10, 2)), 8, N'-', 1)
+GO
+SET IDENTITY_INSERT [dbo].[TProducto] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[TRol] ON 
 GO
 INSERT [dbo].[TRol] ([IdRol], [NombreRol]) VALUES (1, N'Usuario Regular')
@@ -69,7 +93,7 @@ SET IDENTITY_INSERT [dbo].[TUsuario] ON
 GO
 INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado], [IdRol]) VALUES (1, N'JOSUE CAMPOS ACUÑA', N'jcampos40909@ufide.ac.cr', N'118940909', N'FryXUM3ksBjsPEmTHastDw==', 1, 2)
 GO
-INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'304590415', N'm492i8KL8cOxlO4Cg/gt8g==', 1, 2)
+INSERT [dbo].[TUsuario] ([IdUsuario], [Nombre], [CorreoElectronico], [Identificacion], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'304590415', N'm492i8KL8cOxlO4Cg/gt8g==', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[TUsuario] OFF
 GO
@@ -141,6 +165,24 @@ BEGIN
 		WHERE IdUsuario = @IdUsuario
 		
 	END
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarProductos]
+
+AS
+BEGIN
+
+	SELECT	IdProducto,
+			Nombre,
+			Descripcion,
+			Precio,
+			Inventario,
+			Imagen,
+			Estado
+	  FROM	dbo.TProducto
+	  ORDER BY IdProducto ASC
+	
 END
 GO
 
