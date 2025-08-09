@@ -92,7 +92,7 @@ namespace SApi.Controllers
                 {
                 });
 
-                if (resultado != null)
+                if (resultado.Any())
                 {
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 }
@@ -111,7 +111,7 @@ namespace SApi.Controllers
                 {
                 });
 
-                if (resultado != null)
+                if (resultado.Any())
                 {
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 }

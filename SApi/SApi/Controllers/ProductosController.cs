@@ -31,12 +31,34 @@ namespace SApi.Controllers
                     {
                     });
 
-                if (resultado != null)
+                if (resultado.Any())
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 else
                     return BadRequest(_utilitarios.RespuestaIncorrecta("No hay información registrada"));
             }
         }
 
+        [HttpPost]
+        [Route("RegistrarProducto")]
+        public IActionResult RegistrarProducto(Producto producto)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.QueryFirstOrDefault<Producto>("RegistrarProducto", new
+                {
+                    producto.Nombre,
+                    producto.Descripcion,
+                    producto.Precio,
+                    producto.Inventario
+                });
+
+                if (resultado != null)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("La información del producto no fue registrada"));
+            }
+        }
+
+        
     }
 }
