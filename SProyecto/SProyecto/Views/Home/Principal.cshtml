@@ -31,13 +31,13 @@
                                     <p class="card-text">@item.producto.Descripcion</p>
 
                                     <ul class="list-group list-group-flush mb-3">
-                                        <li class="list-group-item">Precio: ₡@item.producto.Precio</li>
+                                        <li class="list-group-item">Precio: $ @item.producto.Precio.ToString("N2")</li>
                                         <li class="list-group-item">Inventario: @item.producto.Inventario</li>
                                         <li class="list-group-item">Estado: @(item.producto.Estado ? "Activo" : "Inactivo")</li>
                                     </ul>
 
                                     <div class="mt-auto text-center">
-                                        <a href="@Url.Action("AgregarAlCarrito", "Carrito", new { id = item.producto.IdProducto })" class="btn btn-outline-primary">
+                                        <a href="@Url.Action("RegistrarProductoCarrito", "Carrito", new { IdProducto = item.producto.IdProducto })" class="btn btn-outline-primary">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i> Agregar al carrito
                                         </a>
                                     </div>
