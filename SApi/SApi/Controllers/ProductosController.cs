@@ -38,6 +38,25 @@ namespace SApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ConsultarProducto")]
+        public IActionResult ConsultarProducto(long IdProducto)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.QueryFirstOrDefault<Producto>("ConsultarProducto",
+                    new
+                    {
+                        IdProducto
+                    });
+
+                if (resultado != null)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No hay información registrada"));
+            }
+        }
+
         [HttpPost]
         [Route("RegistrarProducto")]
         public IActionResult RegistrarProducto(Producto producto)
@@ -59,6 +78,27 @@ namespace SApi.Controllers
             }
         }
 
-        
+        [HttpPut]
+        [Route("ActualizarProducto")]
+        public IActionResult ActualizarProducto(Producto producto)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("ActualizarProducto", new
+                {
+                    producto.IdProducto,
+                    producto.Nombre,
+                    producto.Descripcion,
+                    producto.Precio,
+                    producto.Inventario
+                });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("La información del producto no fue registrada"));
+            }
+        }
+
     }
 }
