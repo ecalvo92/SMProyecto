@@ -40,5 +40,24 @@ namespace SApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("ConsultarCarrito")]
+        public IActionResult ConsultarCarrito(Carrito carrito)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Query<Carrito>("ConsultarCarrito", new
+                {
+                    carrito.IdUsuario,
+                });
+
+                if (resultado.Any())
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No hay productos registrados en el carrito"));
+            }
+        }
+        
+
     }
 }

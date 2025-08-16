@@ -134,6 +134,8 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Principal()
     {
+        _utilitarios.ConsultarDatosCarrito();
+
         if (HttpContext.Session.GetString("IdRol") == "2")
             return RedirectToAction("Dashboard", "Admin");
 

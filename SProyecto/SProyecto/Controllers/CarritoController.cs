@@ -45,5 +45,12 @@ namespace SProyecto.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        public IActionResult ConsultarCarrito()
+        {
+            var resultado = _utilitarios.ConsultarDatosCarrito();
+            return View(resultado); 
+        }
     }
 }
