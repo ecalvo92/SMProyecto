@@ -57,6 +57,25 @@ namespace SApi.Controllers
                     return BadRequest(_utilitarios.RespuestaIncorrecta("No hay productos registrados en el carrito"));
             }
         }
+
+        [HttpPost]
+        [Route("EliminarProductoCarrito")]
+        public IActionResult EliminarProductoCarrito(Carrito carrito)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("EliminarProductoCarrito", new
+                {
+                    carrito.IdUsuario,
+                    carrito.IdProducto
+                });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("El producto no fue eliminado de su carrito"));
+            }
+        }
         
 
     }
