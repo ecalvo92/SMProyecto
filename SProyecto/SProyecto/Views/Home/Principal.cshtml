@@ -18,6 +18,9 @@
                 <div class="row">
                     @foreach (var item in Model.Select((producto, index) => new { producto, index }))
                     {
+                        if (@item.producto.Inventario > 0)
+                        { 
+
                         <div class="col-md-4 mb-4">
                             <div class="card h-100 shadow-sm">
                                 @if (!string.IsNullOrEmpty(item.producto.Imagen))
@@ -44,6 +47,7 @@
                                 </div>
                             </div>
                         </div>
+                        }
                     }
                 </div>
             </div>

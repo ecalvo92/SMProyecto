@@ -76,7 +76,60 @@ namespace SApi.Controllers
                     return BadRequest(_utilitarios.RespuestaIncorrecta("El producto no fue eliminado de su carrito"));
             }
         }
-        
+
+        [HttpPost]
+        [Route("ProcesarPagoCarrito")]
+        public IActionResult ProcesarPagoCarrito(Carrito carrito)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Execute("ProcesarPagoCarrito", new
+                {
+                    carrito.IdUsuario
+                });
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("El carrito no fue pagado correctamente"));
+            }
+        }
+
+        [HttpPost]
+        [Route("ConsultarCompras")]
+        public IActionResult ConsultarCompras(Carrito carrito)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Query<Carrito>("ConsultarCompras", new
+                {
+                    carrito.IdUsuario,
+                });
+
+                if (resultado.Any())
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No hay compras registradas"));
+            }
+        }
+
+        [HttpPost]
+        [Route("ConsultarDetalleCompras")]
+        public IActionResult ConsultarDetalleCompras(Carrito carrito)
+        {
+            using (var contexto = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = contexto.Query<Carrito>("ConsultarDetalleCompras", new
+                {
+                    carrito.IdMaestro,
+                });
+
+                if (resultado.Any())
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                else
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("No hay detalles registrados en la factura"));
+            }
+        }
 
     }
 }

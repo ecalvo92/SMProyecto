@@ -81,6 +81,91 @@ namespace SProyecto.Controllers
             }
         }
 
-        
+        [HttpGet]
+        public IActionResult ProcesarPagoCarrito()
+        {
+            var carrito = new Carrito
+            {
+                IdUsuario = long.Parse(HttpContext.Session.GetString("IdUsuario")!)
+            };
+
+            using (var http = _http.CreateClient())
+            {
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PostAsJsonAsync("api/Carrito/ProcesarPagoCarrito", carrito).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Principal", "Home");
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+
+                    var datosCarrito = _utilitarios.ConsultarDatosCarrito();
+                    return View("ConsultarCarrito", datosCarrito);
+                }
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult ConsultarCompras()
+        {
+            var carrito = new Carrito
+            {
+                IdUsuario = long.Parse(HttpContext.Session.GetString("IdUsuario")!)
+            };
+
+            using (var http = _http.CreateClient())
+            {
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PostAsJsonAsync("api/Carrito/ConsultarCompras", carrito).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<List<Carrito>>>().Result;
+                    return View(datos?.Contenido!);
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View(new List<Carrito>());
+                }
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ConsultarDetalleCompras(long Id)
+        {
+            var carrito = new Carrito
+            {
+                IdMaestro = Id
+            };
+
+            using (var http = _http.CreateClient())
+            {
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PostAsJsonAsync("api/Carrito/ConsultarDetalleCompras", carrito).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    var datos = resultado.Content.ReadFromJsonAsync<RespuestaEstandar<List<Carrito>>>().Result;
+                    return View(datos?.Contenido!);
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaEstandar>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View(new List<Carrito>());
+                }
+            }
+        }
+
     }
 }
